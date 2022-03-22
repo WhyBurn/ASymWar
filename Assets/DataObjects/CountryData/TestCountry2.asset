@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0ec56641070efe49b18b717d78b5266, type: 3}
+  m_Name: TestCountry2
+  m_EditorClassIdentifier: 
+  countryName: 2
+  availableUnits:
+  - {fileID: 11400000, guid: 37f180bada205f340bebaad5300ffbd6, type: 2}
+  startPositions:
+  - unit: {fileID: 11400000, guid: 37f180bada205f340bebaad5300ffbd6, type: 2}
+    xPos: 9
+    yPos: 9
+    country: 1
+  deck:
+  - {fileID: 11400000, guid: 8e76ce2fa27dcd848acba2f685c6f68e, type: 2}
+  - {fileID: 11400000, guid: 8e76ce2fa27dcd848acba2f685c6f68e, type: 2}
+  - {fileID: 11400000, guid: 8e76ce2fa27dcd848acba2f685c6f68e, type: 2}
+  - {fileID: 11400000, guid: 8e76ce2fa27dcd848acba2f685c6f68e, type: 2}
+  - {fileID: 11400000, guid: 8e76ce2fa27dcd848acba2f685c6f68e, type: 2}
+  startingMoney: 10
+  handSize: 4
+  id: 1
+  controlSprite: {fileID: 21300000, guid: 93e030d2f76b57849b9092c654a5d47a, type: 3}
+  possibleRecruits: 00000000
+  initiativeTiebreaker: 1
+  numStartingCards: 3
+  startingIndustry: 0
+  stackingLimit: 2
+  industryUpgradeCost: 2
