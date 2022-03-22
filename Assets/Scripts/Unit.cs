@@ -12,12 +12,12 @@ public class Unit
     private int defense;
     private int maxMovement;
     private float movement;
-    private Vector2Int space;
-    public Stack<Vector2Int> path;
+    private int space;
+    public Stack<int> path;
     private int countryId;
     private int plannedDamage;
 
-    public Unit(UnitData d, Vector2Int s, int country)
+    public Unit(UnitData d, int s, int country)
     {
         data = d;
         maxHealth = d.RandomHealth();
@@ -27,7 +27,7 @@ public class Unit
         maxMovement = d.movement;
         movement = maxMovement;
         space = s;
-        path = new Stack<Vector2Int>();
+        path = new Stack<int>();
         countryId = country;
     }
 
@@ -62,7 +62,7 @@ public class Unit
     {
         get { return (maxMovement); }
     }
-    public Vector2Int Space
+    public int Space
     {
         get { return (space); }
         set { space = value; }
@@ -114,7 +114,7 @@ public class Unit
 
     public void ResetMovement()
     {
-        path = new Stack<Vector2Int>();
+        path = new Stack<int>();
         movement = maxMovement;
     }
 }

@@ -24,7 +24,7 @@ public class Game
     private Country[] countries;
     private Dictionary<int, int> countryIndexs;
     private List<Unit>[] units;
-    private List<Unit>[][] unitsInSpace;
+    private List<Unit>[] unitsInSpace;
 
     private List<int> doneCountries;
     private List<int> actingCountries;
@@ -50,14 +50,10 @@ public class Game
         map = new Map(data.map);
         countries = new Country[data.countries.Length];
         units = new List<Unit>[data.countries.Length];
-        unitsInSpace = new List<Unit>[map.Height][];
+        unitsInSpace = new List<Unit>[map.NumSpaces];
         for(int i = 0; i < unitsInSpace.Length; ++i)
         {
-            unitsInSpace[i] = new List<Unit>[map.Width];
-            for(int j = 0; j < unitsInSpace[i].Length; ++j)
-            {
-                unitsInSpace[i][j] = new List<Unit>();
-            }
+            unitsInSpace[i] = new List<Unit>();
         }
         for(int i = 0; i < countries.Length; ++i)
         {
@@ -66,8 +62,8 @@ public class Game
             units[i] = countries[i].units;
             for(int u = 0; u < units[i].Count; ++u)
             {
-                Vector2Int space = units[i][u].Space;
-                unitsInSpace[space.y][space.x].Add(units[i][u]);
+                int space = units[i][u].Space;
+                unitsInSpace[space].Add(units[i][u]);
             }
         }
         currentPhase = Data.GamePhase.production;
@@ -99,7 +95,7 @@ public class Game
     {
         return (units[countryIndexs[countryId]]);
     }
-    public List<Unit> GetUnitsInSpace(int x, int y)
+    public List<Unit> GetUnitsInSpace(int id)
     {
         /*List<Unit> u = new List<Unit>();
         for(int i = 0; i < units.Length; ++i)
@@ -113,16 +109,12 @@ public class Game
             }
         }
         return (u);*/
-        return (unitsInSpace[y][x]);
-    }
-    public List<Unit> GetUnitsInSpace(Vector2Int position)
-    {
-        return (GetUnitsInSpace(position.x, position.y));
+        return (unitsInSpace[id]);
     }
 
     public void MoveUnit(Unit unit, DistanceSpace distanceSpace)
     {
-        unitsInSpace[unit.Space.y][unit.Space.x].Remove(unit);
+        unitsInSpace[unit.Space].Remove(unit);
         unit.Space = distanceSpace.path[distanceSpace.path.Length - 1];
         for(int i = 0; i < distanceSpace.path.Length - 1; ++i)
         {
@@ -130,14 +122,14 @@ public class Game
         }
         unit.Movement -= distanceSpace.distance;
         map.UpdateBorders(distanceSpace.path);
-        unitsInSpace[unit.Space.y][unit.Space.x].Add(unit);
+        unitsInSpace[unit.Space].Add(unit);
     }
 
     public void UndoLastMove(Unit unit)
     {
         if(unit.path.Count > 0)
         {
-            Vector2Int current = unit.Space;
+            int current = unit.Space;
             unit.Space = unit.path.Pop();
             map.UndoMove(unit.Space, current);
         }
@@ -236,33 +228,31 @@ public class Game
     {
         for (int y = 0; y < unitsInSpace.Length; ++y)
         {
-            for (int x = 0; x < unitsInSpace[y].Length; ++x)
+            if (unitsInSpace[y].Count > 0)
             {
-                if (unitsInSpace[y][x].Count > 0)
+                if (unitsInSpace[y][0].Id != unitsInSpace[y][unitsInSpace[y].Count - 1].Id)
                 {
-                    if(unitsInSpace[y][x][0].Id != unitsInSpace[y][x][unitsInSpace[y][x].Count - 1].Id)
-                    {
-                        ResolveBattle(x, y);
-                    }
+                    ResolveBattle(y);
                 }
             }
+
         }
     }
 
-    public void ResolveBattle(int x, int y)
+    public void ResolveBattle(int id)
     {
         List<Unit> defenders = new List<Unit>();
         List<Unit> attackers = new List<Unit>();
-        defenders.Add(unitsInSpace[y][x][0]);
-        for(int i = 1; i < unitsInSpace[y][x].Count; ++i)
+        defenders.Add(unitsInSpace[id][0]);
+        for(int i = 1; i < unitsInSpace[id].Count; ++i)
         {
-            if(unitsInSpace[y][x][i].Id == defenders[0].Id)
+            if(unitsInSpace[id][i].Id == defenders[0].Id)
             {
-                defenders.Add(unitsInSpace[y][x][i]);
+                defenders.Add(unitsInSpace[id][i]);
             }
             else
             {
-                attackers.Add(unitsInSpace[y][x][i]);
+                attackers.Add(unitsInSpace[id][i]);
             }
         }
         for (int a = 0; a < attackers.Count; ++a)
@@ -319,8 +309,8 @@ public class Game
                 target.PlannedDamage += Mathf.CeilToInt(damage * (1 - defenders[d].InstantDamagePercentage));
             }
         }
-        TakeDamage(x, y);
-        Retreat(x, y);
+        TakeDamage(id);
+        Retreat(id);
     }
 
     public float CalculateDamage(Unit attacker, Unit defender, bool isAttacker)
@@ -328,10 +318,9 @@ public class Game
         int attack = attacker.Attack - defender.Defense;
         if (isAttacker)
         {
-            Vector2Int previous = attacker.path.Peek();
-            int direction = Data.GetDirection(previous, attacker.Space);
-            attack += Map.GetBorder(previous.x, previous.y, direction).data.attackModifier;
-            attack -= Map.GetSpace(defender.Space.x, defender.Space.y).Defense;
+            int previous = attacker.path.Peek();
+            attack += Map.GetBorder(previous, attacker.Space).data.attackModifier;
+            attack -= Map.GetSpace(defender.Space).Defense;
         }
         float damage = attack * Random.Range(0.9f, 1f);
         if(attacker.InstantDamagePercentage > 0)
@@ -350,15 +339,15 @@ public class Game
         return (damage);
     }
 
-    public void TakeDamage(int x, int y)
+    public void TakeDamage(int id)
     {
-        for(int i = 0; i < unitsInSpace[y][x].Count; ++i)
+        for(int i = 0; i < unitsInSpace[id].Count; ++i)
         {
-            Unit unit = unitsInSpace[y][x][i];
+            Unit unit = unitsInSpace[id][i];
             unit.Health -= unit.PlannedDamage;
             if (unit.Health <= 0)
             {
-                unitsInSpace[y][x].RemoveAt(i);
+                unitsInSpace[id].RemoveAt(i);
                 --i;
                 units[countryIndexs[unit.Id]].Remove(unit);
                 countries[countryIndexs[unit.Id]].units.Remove(unit);
@@ -366,21 +355,21 @@ public class Game
         }
     }
 
-    public void Retreat(int x, int y)
+    public void Retreat(int id)
     {
-        if(unitsInSpace[y][x].Count <= 0)
+        if(unitsInSpace[id].Count <= 0)
         {
             return;
         }
-        int defenderId = unitsInSpace[y][x][0].Id;
-        for(int i = 1; i < unitsInSpace[y][x].Count; ++i)
+        int defenderId = unitsInSpace[id][0].Id;
+        for(int i = 1; i < unitsInSpace[id].Count; ++i)
         {
-            if(unitsInSpace[y][x][i].Id != defenderId)
+            if(unitsInSpace[id][i].Id != defenderId)
             {
-                Vector2Int space = unitsInSpace[y][x][i].path.Pop();
-                unitsInSpace[y][x][i].Space = space;
-                unitsInSpace[space.y][space.x].Add(unitsInSpace[y][x][i]);
-                unitsInSpace[y][x].RemoveAt(i);
+                int space = unitsInSpace[id][i].path.Pop();
+                unitsInSpace[id][i].Space = space;
+                unitsInSpace[space].Add(unitsInSpace[id][i]);
+                unitsInSpace[id].RemoveAt(i);
                 --i;
             }
         }
@@ -390,12 +379,9 @@ public class Game
     {
         for (int y = 0; y < unitsInSpace.Length; ++y)
         {
-            for (int x = 0; x < unitsInSpace[y].Length; ++x)
+            if (unitsInSpace[y].Count > 0)
             {
-                if (unitsInSpace[y][x].Count > 0)
-                {
-                    Map.GetSpace(x, y).Controller = unitsInSpace[y][x][0].Id;
-                }
+                Map.GetSpace(y).Controller = unitsInSpace[y][0].Id;
             }
         }
     }
@@ -422,28 +408,28 @@ public class Game
     public void AddUnit(Unit unit)
     {
         GetCountry().units.Add(unit);
-        unitsInSpace[unit.Space.y][unit.Space.x].Add(unit);
+        unitsInSpace[unit.Space].Add(unit);
         units[countryIndexs[unit.Id]].Add(unit);
     }
 
-    public int StackingModifier(Vector2Int space)
+    public int StackingModifier(int space)
     {
-        return (map.GetSpace(space.x, space.y).StackingModifier);
+        return (map.GetSpace(space).StackingModifier);
     }
 
-    public int StackingLimit(Vector2Int space)
+    public int StackingLimit(int space)
     {
         int countryLimt = countries[countryIndexs[currentCountry]].SeaStackingLimit;
-        if(map.GetSpace(space.x, space.y).Land)
+        if(map.GetSpace(space).Land)
         {
             countryLimt = countries[countryIndexs[currentCountry]].LandStackingLimit;
         }
-        return (Mathf.Max(1, map.GetSpace(space.x, space.y).StackingModifier + countryLimt));
+        return (Mathf.Max(1, map.GetSpace(space).StackingModifier + countryLimt));
     }
 
-    public bool HasSeaUnit(Vector2Int space)
+    public bool HasSeaUnit(int space)
     {
-        List<Unit> units = unitsInSpace[space.y][space.x];
+        List<Unit> units = unitsInSpace[space];
         foreach(Unit unit in units)
         {
             if(unit.MoveType == Data.MoveType.sea)

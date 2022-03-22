@@ -20,18 +20,22 @@ public class GameController : MonoBehaviour
         Game game = Game.CreateGame(testScenario);
         GameObject spacePrefab = Resources.Load<GameObject>("Space");
         GameObject borderPrefab = Resources.Load<GameObject>("Border");
-        for(int y = 0; y < game.Map.Height; ++y)
+        GameObject linePrefab = Resources.Load<GameObject>("Line");
+        for (int y = 0; y < game.Map.NumSpaces; ++y)
         {
-            for(int x = 0; x < game.Map.Width; ++x)
+            Space spaceData = game.Map.GetSpace(y);
+            GameObject space = Instantiate(spacePrefab, Data.GetPosition(spaceData.Position), new Quaternion());
+            space.GetComponent<SpaceDisplay>().space = spaceData;
+            space.GetComponent<SpaceDisplay>().spaceBackground.sprite = spaceData.Sprite;
+            for (int i = 0; i < spaceData.NumAdjacent; ++i)
             {
-                GameObject space = Instantiate(spacePrefab, Data.GetPosition(x, y), new Quaternion());
-                space.GetComponent<SpaceDisplay>().space = game.Map.GetSpace(x, y);
-                space.GetComponent<SpaceDisplay>().spaceBackground.sprite = game.Map.GetSpace(x, y).Sprite;
-                for(int i = 0; i < Data.spaceBorders; ++i)
-                {
-                    GameObject border = Instantiate(borderPrefab, Data.GetPosition(x, y), Quaternion.Euler(0, 0, 360 / Data.spaceBorders * i));
-                    border.GetComponent<SpriteRenderer>().sprite = game.Map.GetBorder(x, y, i).data.sprite;
-                }
+                Vector2 startPos = Data.GetPosition(spaceData.Position);
+                Vector2 endPos = Data.GetPosition(spaceData.GetAdjacent(i).destination.Position);
+                Vector2 midPos = new Vector2((startPos.x + endPos.x) / 2, (startPos.y + endPos.y) / 2);
+                GameObject line = Instantiate(linePrefab);
+                line.GetComponent<LineRenderer>().SetPositions(new Vector3[] { new Vector3(startPos.x, startPos.y, 0), new Vector3(endPos.x, endPos.y, 0) });
+                GameObject border = Instantiate(borderPrefab, midPos, new Quaternion());
+                border.GetComponent<SpriteRenderer>().sprite = spaceData.GetAdjacent(i).data.sprite;
             }
         }
         phaseDisplayText = phaseDisplay.GetComponentInChildren<Text>();

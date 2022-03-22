@@ -6,7 +6,6 @@ using UnityEngine;
 public class CountryStartUnit
 {
     public UnitData unit;
-    public int xPos;
-    public int yPos;
+    public int space;
     public int country;
 }

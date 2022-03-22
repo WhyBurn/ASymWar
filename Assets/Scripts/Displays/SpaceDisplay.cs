@@ -32,7 +32,7 @@ public class SpaceDisplay : MonoBehaviour, IPointerClickHandler
         {
             control.sprite = null;
         }
-        List<Unit> units = Game.GetGame().GetUnitsInSpace(space.Position);
+        List<Unit> units = Game.GetGame().GetUnitsInSpace(space.SpaceID);
         if(units.Count > 0)
         {
             defenders.sprite = Game.GetGame().GetCountry(units[0].Id).ControlSprite;

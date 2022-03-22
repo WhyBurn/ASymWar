@@ -23,7 +23,7 @@ public class Country
         units = new List<Unit>();
         for(int i = 0; i < d.startPositions.Length; ++i)
         {
-            units.Add(new Unit(d.startPositions[i].unit, new Vector2Int(d.startPositions[i].xPos, d.startPositions[i].yPos), d.id));
+            units.Add(new Unit(d.startPositions[i].unit, d.startPositions[i].space, d.id));
         }
         deck = new List<Card>();
         discard = new List<Card>();

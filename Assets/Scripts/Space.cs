@@ -5,16 +5,20 @@ using UnityEngine;
 public class Space
 {
     private SpaceData data;
+    private int spaceNum;
     private int xPos;
     private int yPos;
     private int controllerId;
     private int recruitType;
+    private string spaceName;
+    private Border[] adjacentSpaces;
 
     public DistanceSpace availableMove;
 
-    public Space(SpaceData d, int x, int y, int c, int r)
+    public Space(SpaceData d, int sN, int x, int y, int c, int r)
     {
         data = d;
+        spaceNum = sN;
         xPos = x;
         yPos = y;
         controllerId = c;
@@ -67,10 +71,24 @@ public class Space
     {
         get { return (data.land); }
     }
+    public int NumAdjacent
+    {
+        get { return (adjacentSpaces.Length); }
+    }
+    public int SpaceID
+    {
+        get { return (spaceNum); }
+    }
+
+    public Border GetAdjacent(int pos)
+    {
+        return (adjacentSpaces[pos]);
+    }
 
     public string GetDescription()
     {
-        string description = data.terrainName;
+        string description = spaceName;
+        description += "\n" + data.terrainName;
         description += "\nEntrance Move Cost: " + data.entrance;
         description += "\nExit Move Cost: " + data.exit;
         description += "\nTerrain Defense Bonus: " + data.terrainDefense;

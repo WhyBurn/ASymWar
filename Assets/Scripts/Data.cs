@@ -11,7 +11,6 @@ public static class Data
 
     public static float spaceSize = 1.28f;
     public static Vector2Int defaultRes = new Vector2Int(800, 600);
-    public static int spaceBorders = 6;
 
     public static ScenarioData selectedScenario;
     public static int localId;
@@ -22,7 +21,7 @@ public static class Data
     public static Card selectedCard;
     public static UnitData selectedUnitData;
 
-    public static Vector2Int GetSpace(Vector2Int space, int direction)
+    /*public static Vector2Int GetSpace(Vector2Int space, int direction)
     {
         if(direction == 0)
         {
@@ -125,7 +124,7 @@ public static class Data
             }
         }
         return (-1);
-    }
+    }*/
 
     public static Vector2 GetPosition(Vector2Int spacePos)
     {

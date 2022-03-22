@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class DistanceSpace : IComparable
 {
-    public Vector2Int position;
+    public int position;
     public float distance;
-    public Vector2Int[] path;
+    public int[] path;
 
-    public DistanceSpace(Vector2Int p, float d, Vector2Int[] previous)
+    public DistanceSpace(int p, float d, int[] previous)
     {
         position = p;
         distance = d;
-        path = new Vector2Int[previous.Length + 1];
+        path = new int[previous.Length + 1];
         for(int i = 0; i < previous.Length; ++i)
         {
             path[i] = previous[i];

@@ -59,14 +59,14 @@ public class PlayerController : MonoBehaviour
         if (Data.rightClicked != null)
         {
             if (Data.selectedUnit != null && Data.rightClicked.availableMove != null && game.currentCountry == Data.localId && game.IsMovePhase
-                && game.GetUnitsInSpace(Data.rightClicked.Position).Count < game.StackingLimit(Data.rightClicked.Position) 
+                && game.GetUnitsInSpace(Data.rightClicked.SpaceID).Count < game.StackingLimit(Data.rightClicked.SpaceID) 
                 && (Data.selectedUnit.path.Count > 0 || game.GetCountry().NumberOfMovedUnits < game.GetCountry().plannedCard.NumUnits))
             {
                 Data.selectedSpace = Data.rightClicked;
                 game.MoveUnit(Data.selectedUnit, Data.rightClicked.availableMove);
                 unitHud.Activate(Data.selectedUnit);
                 ResetUnitContent();
-                game.Map.SetMovement(Data.rightClicked.Position, Data.selectedUnit.Movement, Data.selectedUnit.Id, Data.selectedUnit.MoveType);
+                game.Map.SetMovement(Data.rightClicked.SpaceID, Data.selectedUnit.Movement, Data.selectedUnit.Id, Data.selectedUnit.MoveType);
             }
             Data.rightClicked = null;
         }
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
     public void ResetUnitContent()
     {
         ClearUnitContent();
-        List<Unit> units = Game.GetGame().GetUnitsInSpace(Data.selectedSpace.Position);
+        List<Unit> units = Game.GetGame().GetUnitsInSpace(Data.selectedSpace.SpaceID);
         foreach(Unit unit in units)
         {
             GameObject display = Instantiate(Resources.Load<GameObject>("UnitDisplay"), unitContent.transform);
@@ -243,10 +243,10 @@ public class PlayerController : MonoBehaviour
     public void RecruitSelected()
     {
         if(Data.selectedUnitData != null && Data.selectedUnitData.cost <= Game.GetGame().GetCountry().Money 
-            && Game.GetGame().StackingLimit(Data.selectedSpace.Position) > Game.GetGame().GetUnitsInSpace(Data.selectedSpace.Position).Count)
+            && Game.GetGame().StackingLimit(Data.selectedSpace.SpaceID) > Game.GetGame().GetUnitsInSpace(Data.selectedSpace.SpaceID).Count)
         {
             Game.GetGame().GetCountry().Money -= Data.selectedUnitData.cost;
-            Unit newUnit = new Unit(Data.selectedUnitData, Data.selectedSpace.Position, Game.GetGame().currentCountry);
+            Unit newUnit = new Unit(Data.selectedUnitData, Data.selectedSpace.SpaceID, Game.GetGame().currentCountry);
             Game.GetGame().AddUnit(newUnit);
             recruitUnitPanel.SetActive(false);
             Data.selectedUnitData = null;

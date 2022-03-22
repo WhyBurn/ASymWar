@@ -6,6 +6,8 @@ public class Border
 {
     public BorderData data;
     public int numMoves;
+    public Space source;
+    public Space destination;
 
     public Border(BorderData d)
     {
