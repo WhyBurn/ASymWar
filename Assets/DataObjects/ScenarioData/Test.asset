@@ -17,3 +17,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0def8a7d824b0a340aa3bac185032495, type: 2}
   - {fileID: 11400000, guid: a23938122e899d049a00fc2125c332b9, type: 2}
   map: {fileID: 11400000, guid: 15b4e739ebfaa2e4f8370d983f96fe33, type: 2}
+  recruitNames:
+  - 

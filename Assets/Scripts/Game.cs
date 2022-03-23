@@ -444,4 +444,18 @@ public class Game
     {
         return (scenario.recruitNames[index]);
     }
+
+    public int GetNumUnits(int spaceId, int countryId)
+    {
+        List<Unit> units = unitsInSpace[spaceId];
+        int count = 0;
+        foreach(Unit unit in units)
+        {
+            if(unit.Id == countryId)
+            {
+                ++count;
+            }
+        }
+        return (count);
+    }
 }

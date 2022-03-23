@@ -15,3 +15,4 @@ MonoBehaviour:
   moveCost: 0
   attackModifier: 0
   maxUnits: -1
+  sprite: {fileID: 21300000, guid: ea8c2e7ae74a5294fa012de13fa03b05, type: 3}

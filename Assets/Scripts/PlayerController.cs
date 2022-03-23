@@ -58,8 +58,9 @@ public class PlayerController : MonoBehaviour
         }
         if (Data.rightClicked != null)
         {
-            if (Data.selectedUnit != null && Data.rightClicked.availableMove != null && game.currentCountry == Data.localId && game.IsMovePhase
-                && game.GetUnitsInSpace(Data.rightClicked.SpaceID).Count < game.StackingLimit(Data.rightClicked.SpaceID) 
+            if (Data.selectedUnit != null && Data.rightClicked.availableMove != null && Data.selectedUnit.Id == game.currentCountry
+                && game.currentCountry == Data.localId && game.IsMovePhase
+                && game.GetNumUnits(Data.rightClicked.SpaceID, Data.selectedUnit.Id) < game.StackingLimit(Data.rightClicked.SpaceID) 
                 && (Data.selectedUnit.path.Count > 0 || game.GetCountry().NumberOfMovedUnits < game.GetCountry().plannedCard.NumUnits))
             {
                 Data.selectedSpace = Data.rightClicked;
