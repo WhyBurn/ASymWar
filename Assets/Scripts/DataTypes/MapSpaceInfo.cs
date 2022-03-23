@@ -10,7 +10,7 @@ public class MapSpaceInfo
     public int yPos;
     public int country;
     public int recruitType;
-    public BorderData[] borders;
+    public string name;
 
     public MapSpaceInfo(int x, int y)
     {
@@ -19,6 +19,6 @@ public class MapSpaceInfo
         yPos = y;
         country = -1;
         recruitType = 0;
-        borders = new BorderData[0];
+        name = "";
     }
 }

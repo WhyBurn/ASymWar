@@ -3895,7 +3895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c095a8b2c6465458ae055cff7dfaec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testScenario: {fileID: 11400000, guid: ea492358a1bc4004d848ee2b45cf3b14, type: 2}
+  testScenario: {fileID: 11400000, guid: a9b37d2bf1e11604f97e9690c6d66b10, type: 2}
   spaceHud: {fileID: 1265034431}
   unitHud: {fileID: 815732354}
   endTurnButton: {fileID: 2087843678}

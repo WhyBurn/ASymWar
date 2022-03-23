@@ -22,15 +22,13 @@ public class CustomUnitInspector : PropertyDrawer
         // Calculate rects
         float width = position.width;
         float height = position.height;
-        Rect spaceRect = new Rect(position.x, position.y, width / 4, height);
-        Rect xRect = new Rect(position.x + width / 4, position.y, width / 4, height);
-        Rect yRect = new Rect(position.x + width / 2, position.y, width / 4, height);
+        Rect unitRect = new Rect(position.x, position.y, width / 2, height);
+        Rect spaceRect = new Rect(position.x + width / 2, position.y, width / 4, height);
         Rect idRect = new Rect(position.x + width / 4 * 3, position.y, width / 4, height);
 
         // Draw fields - passs GUIContent.none to each so they are drawn without labels
-        EditorGUI.PropertyField(spaceRect, property.FindPropertyRelative("unit"), GUIContent.none);
-        EditorGUI.PropertyField(xRect, property.FindPropertyRelative("xPos"), GUIContent.none);
-        EditorGUI.PropertyField(yRect, property.FindPropertyRelative("yPos"), GUIContent.none);
+        EditorGUI.PropertyField(unitRect, property.FindPropertyRelative("unit"), GUIContent.none);
+        EditorGUI.PropertyField(spaceRect, property.FindPropertyRelative("space"), GUIContent.none);
         EditorGUI.PropertyField(idRect, property.FindPropertyRelative("country"), GUIContent.none);
 
         // Set indent back to what it was

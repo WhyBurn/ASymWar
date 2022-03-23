@@ -15,7 +15,7 @@ public class Space
 
     public DistanceSpace availableMove;
 
-    public Space(SpaceData d, int sN, int x, int y, int c, int r)
+    public Space(SpaceData d, int sN, int x, int y, int c, int r, string n)
     {
         data = d;
         spaceNum = sN;
@@ -24,6 +24,8 @@ public class Space
         controllerId = c;
         recruitType = r;
         availableMove = null;
+        spaceName = n;
+        adjacentSpaces = new Border[0];
     }
 
     public float Entrance
@@ -105,5 +107,16 @@ public class Space
             description += "\nSpace provides " + data.income + " income.";
         }
         return (description);
+    }
+
+    public void AddAdjacent(BorderData border, Space destination)
+    {
+        Border[] newBorders = new Border[adjacentSpaces.Length + 1];
+        for (int i = 0; i < adjacentSpaces.Length; ++i)
+        {
+            newBorders[i] = adjacentSpaces[i];
+        }
+        newBorders[adjacentSpaces.Length] = new Border(border, this, destination);
+        adjacentSpaces = newBorders;
     }
 }

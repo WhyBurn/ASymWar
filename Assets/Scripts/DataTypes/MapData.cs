@@ -7,12 +7,14 @@ using UnityEngine;
 public class MapData : ScriptableObject
 {
     public MapSpaceInfo[] mapSpaces;
+    public MapBorderInfo[] borders;
 
     public void FixArrays()
     {
         if (mapSpaces == null)
         {
             mapSpaces = new MapSpaceInfo[0];
+            borders = new MapBorderInfo[0];
         }
         /*MapSpaceInfo[] s = new MapSpaceInfo[width * height];
         MapBorderInfo[] b = new MapBorderInfo[width * height * Data.spaceBorders];

@@ -17,8 +17,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 37f180bada205f340bebaad5300ffbd6, type: 2}
   startPositions:
   - unit: {fileID: 11400000, guid: 37f180bada205f340bebaad5300ffbd6, type: 2}
-    xPos: 9
-    yPos: 9
+    space: 9
     country: 1
   deck:
   - {fileID: 11400000, guid: 8e76ce2fa27dcd848acba2f685c6f68e, type: 2}
@@ -34,5 +33,6 @@ MonoBehaviour:
   initiativeTiebreaker: 1
   numStartingCards: 3
   startingIndustry: 0
-  stackingLimit: 2
+  landStackingLimit: 0
+  seaStackingLimit: 0
   industryUpgradeCost: 2

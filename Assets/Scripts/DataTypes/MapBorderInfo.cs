@@ -6,15 +6,12 @@ using UnityEngine;
 public class MapBorderInfo
 {
     public BorderData border;
-    public int xPos;
-    public int yPos;
-    public int direction;
+    public int source;
+    public int destination;
 
-    public MapBorderInfo(int x, int y, int d)
+    public MapBorderInfo()
     {
-        border = Resources.Load<BorderData>("DefaultBorder");
-        xPos = x;
-        yPos = y;
-        direction = d;
+        source = 0;
+        destination = 0;
     }
 }

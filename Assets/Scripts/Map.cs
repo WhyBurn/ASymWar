@@ -16,7 +16,12 @@ public class Map
         for (int y = 0; y < spaces.Length; ++y)
         {
             spaces[y] = new Space(data.mapSpaces[y].space, y, data.mapSpaces[y].xPos, data.mapSpaces[y].yPos
-                , data.mapSpaces[y].country, data.mapSpaces[y].recruitType);
+                , data.mapSpaces[y].country, data.mapSpaces[y].recruitType, data.mapSpaces[y].name);
+        }
+        for(int i = 0; i < data.borders.Length; ++i)
+        {
+            MapBorderInfo border = data.borders[i];
+            spaces[border.source].AddAdjacent(border.border, spaces[border.destination]);
         }
     }
 

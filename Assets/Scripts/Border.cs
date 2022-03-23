@@ -14,4 +14,10 @@ public class Border
         data = d;
         numMoves = 0;
     }
+    public Border(BorderData d, Space s, Space sD)
+    {
+        data = d;
+        source = s;
+        destination = sD;
+    }
 }
